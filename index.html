@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>КБЖВ Калькулятор</title>
+  <style>
+    body {
+      font-family: 'Helvetica', sans-serif;
+      background-color: #f7f7f7;
+      margin: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    label {
+      margin-right: 10px;
+      color: #666;
+    }
+
+    select, input, button {
+      margin: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .added {
+      background-color: #aaffaa;
+      transition: background-color 1s ease-out;
+    }
+
+    .error {
+      background-color: #ffaaaa;
+      transition: background-color 1s ease-out;
+    }
+
+    footer {
+      margin-top: 20px;
+      color: #888;
+    }
+
+    @media only screen and (max-width: 600px) {
+      select, input, button {
+        width: calc(100% - 20px);
+        margin-right: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>КБЖВ Калькулятор</h2>
+
+  <label for="productSelect">Виберіть продукт:</label>
+  <select id="productSelect">
+    <option value="Яйця">Яйця</option>
+    <option value="Молоко">Молоко</option>
+    <option value="Хліб">Хліб</option>
+  </select>
+
+  <button onclick="addProduct()">Додати продукт</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Назва продукту</th>
+        <th>Тип продукту</th>
+        <th>Кількість</th>
+        <th>Ккал</th>
+        <th>Білки (г)</th>
+        <th>Жири (г)</th>
+        <th>Вуглеводи (г)</th>
+        <th>Дії</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Тут буде виводитися таблиця з даними -->
+    </tbody>
+    <tfoot>
+      <tr id="totalsRow">
+        <td colspan="2"><strong>Всього:</strong></td>
+        <td id="totalQuantity">0</td>
+        <td id="totalKcal">0</td>
+        <td id="totalProteins">0</td>
+        <td id="totalFats">0</td>
+        <td id="totalCarbohydrates">0</td>
+        <td></td>
+      </tr>
+      <tr id="averagesRow">
+        <td colspan="3"><strong>Середнє на 100г:</strong></td>
+        <td id="avgKcal">0</td>
+        <td id="avgProteins">0</td>
+        <td id="avgFats">0</td>
+        <td id="avgCarbohydrates">0</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <footer>&copy; 2023 КБЖВ Калькулятор</footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    var products = [
+      { name: "Яйця", type: "Протеїни", proteins: 10, fats: 8, carbohydrates: 1, kcal: 150 },
+      { name: "Молоко", type: "Молочні продукти", proteins: 3, fats: 5, carbohydrates: 4, kcal: 50 },
+      { name: "Хліб", type: "Зернові продукти", proteins: 2, fats: 1, carbohydrates: 20, kcal: 120 }
+      // Додайте інші продукти за потребою
+    ];
+
+    var userProducts = [];
+
+    $(document).ready(function () {
+      var productSelect = $("#productSelect");
+      products.forEach(function (product) {
+        productSelect.append($("<option>").text(product.name).val(JSON.stringify(product)));
+      });
+    });
+
+    function addProduct() {
+      var selectedProduct = JSON.parse($("#productSelect").val());
+      var productName = selectedProduct.name;
+
+      if (userProducts.some(product => product.name === productName)) {
+        highlightRow(productName, 'error');
+        return;
+      }
+
+      var productType = selectedProduct.type;
+      var quantity = 1;
+
+      var totalProteins = (selectedProduct.proteins / 100) * quantity;
+      var totalFats = (selectedProduct.fats / 100) * quantity;
+      var totalCarbohydrates = (selectedProduct.carbohydrates / 100) * quantity;
+      var totalKcal = (selectedProduct.kcal / 100) * quantity;
+
+      var tableBody = $("#tableBody");
+      var newRow = $("<tr>");
+
+      newRow.append($("<td>").text(productName));
+      newRow.append($("<td>").text(productType));
+      newRow.append($("<td>").html('<input type="number" class="quantityInput" value="' + quantity + '" min="1">'));
+      newRow.append($("<td>").text(totalKcal.toFixed(2)));
+      newRow.append($("<td>").text(totalProteins.toFixed(2)));
+      newRow.append($("<td>").text(totalFats.toFixed(2)));
+      newRow.append($("<td>").text(totalCarbohydrates.toFixed(2)));
+      newRow.append($("<td>").html('<button onclick="removeProduct(this)">Видалити</button>'));
+
+      tableBody.append(newRow);
+
+      userProducts.push({
+        name: productName,
+        type: productType,
+        proteins: selectedProduct.proteins,
+        fats: selectedProduct.fats,
+        carbohydrates: selectedProduct.carbohydrates,
+        kcal: selectedProduct.kcal
+      });
+
+      highlightRow(productName, 'added');
+
+      newRow.find("td:eq(2) input").on("input", function () {
+        recalculateRow(newRow);
+        updateTotals();
+      });
+
+      updateTotals();
+    }
+
+    function recalculateRow(row) {
+      var quantity = row.find("td:eq(2) input").val();
+      var productName = row.find("td:eq(0)").text();
+      var selectedProduct = userProducts.find(function (product) {
+        return product.name === productName;
+      });
+
+      var totalProteins = (selectedProduct.proteins / 100) * quantity;
+      var totalFats = (selectedProduct.fats / 100) * quantity;
+      var totalCarbohydrates = (selectedProduct.carbohydrates / 100) * quantity;
+      var totalKcal = (selectedProduct.kcal / 100) * quantity;
+
+      row.find("td:eq(3)").text(totalKcal.toFixed(2));
+      row.find("td:eq(4)").text(totalProteins.toFixed(2));
+      row.find("td:eq(5)").text(totalFats.toFixed(2));
+      row.find("td:eq(6)").text(totalCarbohydrates.toFixed(2));
+    }
+
+    function updateTotals() {
+      var totalQuantity = 0;
+      var totalKcal = 0;
+      var totalProteins = 0;
+      var totalFats = 0;
+      var totalCarbohydrates = 0;
+
+      $("#tableBody tr").each(function () {
+        var quantity = $(this).find("td:eq(2) input").val();
+        var kcal = parseFloat($(this).find("td:eq(3)").text());
+        var proteins = parseFloat($(this).find("td:eq(4)").text());
+        var fats = parseFloat($(this).find("td:eq(5)").text());
+        var carbohydrates = parseFloat($(this).find("td:eq(6)").text());
+
+        totalQuantity += parseFloat(quantity);
+        totalKcal += kcal;
+        totalProteins += proteins;
+        totalFats += fats;
+        totalCarbohydrates += carbohydrates;
+      });
+
+      var avgKcal = totalKcal / totalQuantity;
+      var avgProteins = totalProteins / totalQuantity;
+      var avgFats = totalFats / totalQuantity;
+      var avgCarbohydrates = totalCarbohydrates / totalQuantity;
+
+      $("#totalQuantity").text(totalQuantity);
+      $("#totalKcal").text(totalKcal.toFixed(2));
+      $("#totalProteins").text(totalProteins.toFixed(2));
+      $("#totalFats").text(totalFats.toFixed(2));
+      $("#totalCarbohydrates").text(totalCarbohydrates.toFixed(2));
+      $("#avgKcal").text(avgKcal.toFixed(2));
+      $("#avgProteins").text(avgProteins.toFixed(2));
+      $("#avgFats").text(avgFats.toFixed(2));
+      $("#avgCarbohydrates").text(avgCarbohydrates.toFixed(2));
+    }
+
+    function removeProduct(button) {
+      var row = $(button).closest("tr");
+      var productName = row.find("td:eq(0)").text();
+
+      userProducts = userProducts.filter(function (product) {
+        return product.name !== productName;
+      });
+
+      row.remove();
+
+      updateTotals();
+    }
+
+    function highlightRow(productName, className) {
+      var row = $("#tableBody tr:contains('" + productName + "')");
+
+      row.addClass(className);
+      setTimeout(function () {
+        row.removeClass(className);
+      }, 2000);
+    }
+  </script>
+
+</body>
+
+</html>
