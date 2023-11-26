@@ -45,6 +45,18 @@
     .category-card {
       background-color: #4CAF50;
       color: white;
+      width: 80px;
+      height: 80px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin: 5px;
+    }
+
+    .category-container {
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 10px;
     }
 
     .product-card {
@@ -107,7 +119,7 @@
   <div class="modal" id="myModal">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
-      <div id="categories"></div>
+      <div class="category-container" id="categories"></div>
       <div id="products"></div>
     </div>
   </div>
@@ -118,26 +130,26 @@
       { category: 'fruits', name: 'Banana' },
       { category: 'vegetables', name: 'Carrot' },
       { category: 'vegetables', name: 'Broccoli' },
+      { category: 'meat', name: 'Apple' },
+      { category: 'oil', name: 'Banana' },
+      { category: 'waters', name: 'Carrot' },
+      { category: 'vegetables', name: 'Broccoli' },
     ];
 
     const userProducts = [];
-    let categoriesAdded = false; // Флаг для відстеження додавання категорій
 
     function openModal() {
       const modal = document.getElementById('myModal');
       modal.style.display = 'flex';
 
-      if (!categoriesAdded) {
-        // Додаємо категорії тільки якщо їх ще не додано
-        const categoriesDiv = document.getElementById('categories');
-        const uniqueCategories = [...new Set(products.map(product => product.category))];
-        uniqueCategories.forEach(category => {
-          const categoryCard = createCard(category, 'category-card', showProductsInCategory);
-          categoriesDiv.appendChild(categoryCard);
-        });
-
-        categoriesAdded = true; // Встановлюємо флаг, що категорії додані
-      }
+      // Відображення категорій
+      const categoriesDiv = document.getElementById('categories');
+      categoriesDiv.innerHTML = '';
+      const uniqueCategories = [...new Set(products.map(product => product.category))];
+      uniqueCategories.forEach(category => {
+        const categoryCard = createCard(category, 'category-card', showProductsInCategory);
+        categoriesDiv.appendChild(categoryCard);
+      });
     }
 
     function showProductsInCategory(category) {
