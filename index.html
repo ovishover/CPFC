@@ -9,6 +9,7 @@
             position: absolute;
             border: 1px solid #ccc;
             width: 150px;
+            /* margin-top: 70px; */
             background-color: azure;
         }
 
@@ -16,14 +17,26 @@
             border: 1px solid #ccc;
             margin-top: 10px;
             padding: 10px;
-            width: 300px;
+            /* width: 150px; */
+            display: block;
+            max-height: 180px;
             background-color: #f9f9f9;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             transition: background-color 5s;
             position: relative;
         }
-
+        .product-card button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+            background-color: #ff6961;
+            color: #fff;
+            border: none;
+            padding: 5px;
+            border-radius: 3px;
+        }
         .product-card.duplicate {
             animation: highlightDuplicate 5s;
         }
@@ -42,22 +55,12 @@
             50% { background-color: #fff; }
         }
 
-        .product-card button {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            cursor: pointer;
-            background-color: #ff6961;
-            color: #fff;
-            border: none;
-            padding: 5px;
-            border-radius: 3px;
-        }
+   
 
         #totalInfo {
             border: 1px solid #ccc;
             margin-top: 10px;
-            padding: 10px;
+            padding: 5px;
             width: 300px;
             background-color: #f9f9f9;
             border-radius: 5px;
@@ -72,16 +75,17 @@
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            margin-right: 10px;
+            /* margin-right: 10px; */
+
         }
 
         #search-container {
             display: flex;
-            align-items: center;
+            /* align-items: center; */
             justify-content: space-around;
-            align-content: flex-start;
+            /* align-content: flex-start;
             flex-wrap: nowrap;
-            flex-direction: row;
+            flex-direction: row; */
         }
 
         #userProducts {
@@ -141,19 +145,23 @@
             justify-content: space-evenly;
             align-items: stretch;
         }
+        .cardName{
+          margin-bottom: 15px;
+        }
 
     </style>
     <title>Dynamic Search</title>
 </head>
 <body>
 <header>
-    <div id="search-container">
+    
+
+    <div id="totalInfo">
+        <div id="search-container">
         <input type="text" id="search" oninput="showSuggestions(this.value)" onblur="hideSuggestions()" placeholder="Пошук продукту..." class="input">
         <div id="suggestions"></div>
     </div>
-
-    <div id="totalInfo">
-        <h2 class="title">Загальна інформація</h2>
+    <h2 class="title">Загальна інформація</h2>
         <div class="table-container">
             <div class="table-header">
                 <div>Назва</div>
@@ -286,13 +294,17 @@
         card.classList.add('product-card');
         card.setAttribute('id', `userProductCard_${index}`);
         card.innerHTML = `
-            <div><strong>${product.name}</strong></div>
+        <div>
+            <div class="cardName"><strong>${product.name}</strong></div>
             <div>Кількість: <input type="number" class="quantity-input" value="${product.quantity}" onchange="updateQuantity(this, ${index})"> г</div>
             <div>Ккал: ${product.calories.toFixed(2)}</div>
             <div>Білки: ${product.proteins.toFixed(2)} г</div>
             <div>Жири: ${product.fats.toFixed(2)} г</div>
             <div>Вуглеводи: ${product.carbs.toFixed(2)} г</div>
+          </div>
+          <div>
             <button onclick="removeProduct(${index})">Видалити</button>
+          </div>
         `;
         return card;
     }
