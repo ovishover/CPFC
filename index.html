@@ -6,13 +6,12 @@
     <style>
         #suggestions {
             display: none;
-            position: absolute;
+            position: fixed;
             border: 1px solid #ccc;
-            width: 150px;
-            /* margin-top: 70px; */
-            background-color: azure;
+            width: 180px;
+min-height: 25px;
+            background-color: rgb(172, 248, 248);
         }
-
         .product-card {
             border: 1px solid #ccc;
             margin-top: 10px;
@@ -83,12 +82,13 @@
         }
 
         #search-container {
-            display: flex;
-            /* align-items: center; */
-            justify-content: space-around;
-            /* align-content: flex-start;
-            flex-wrap: nowrap;
-            flex-direction: row; */
+          display: flex;
+    /* width: 180px; */
+    align-items: center;
+    justify-content: space-around;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
         }
 
         #userProducts {
@@ -156,6 +156,15 @@
             text-align: center;
               margin: 10px 0px 10px 0px;
           }
+          .input {
+            /* margin-bottom: 100px; */
+
+          }
+          .search-input {
+            display: block;
+            align-items: center;
+            justify-content: space-around;
+          }
 
     </style>
     <title>Dynamic Search</title>
@@ -194,10 +203,13 @@
                 <div><span id="avgCarbs">0</span></div>
             </div>
         </div>
+        <div class="search-input">
         <div id="search-container">
           <input type="text" id="search" oninput="showSuggestions(this.value)" onblur="hideSuggestions()" placeholder="Пошук продукту..." class="input">
-          <div id="suggestions"></div>
+          
       </div>
+      <div id="suggestions"></div>
+    </div>
     </div>
 </header>
 
@@ -285,17 +297,17 @@
 
         userProducts.push(userProduct);
 
-        // Додаємо анімацію для нового продукту
-        var userProductsDiv = document.getElementById('userProducts');
-        var newCard = createUserProductCard(userProduct, userProducts.length - 1);
-        userProductsDiv.appendChild(newCard);
-        newCard.classList.add('new');
-        setTimeout(function() {
-            newCard.classList.remove('new');
-        }, 5000); // збільшено час анімації
+          // Додаємо анімацію для нового продукту
+          var userProductsDiv = document.getElementById('userProducts');
+          var newCard = createUserProductCard(userProduct, userProducts.length - 1);
+          userProductsDiv.appendChild(newCard);
+          newCard.classList.add('new');
+          setTimeout(function() {
+              newCard.classList.remove('new');
+          }, 5000); // збільшено час анімації
 
-        updatePage();
-    }
+          updatePage();
+      }
 
     function createUserProductCard(product, index) {
         var card = document.createElement('div');
