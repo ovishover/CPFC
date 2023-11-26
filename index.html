@@ -1,262 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мобільний додаток</title>
-  <style>
-    body {
-      font-family: 'Helvetica', sans-serif;
-      background-color: #f7f7f7;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #suggestions {
+            display: none;
+            position: absolute;
+            border: 1px solid #ccc;
+            width: 150px;
+        }
 
-    h2 {
-      color: #333;
-    }
+        .product-card {
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            padding: 10px;
+            width: 300px;
+        }
 
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .card {
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      margin: 10px;
-      padding: 20px;
-    
-      max-width: 400px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    .category-card {
-      background-color: #4CAF50;
-      color: white;
-      width: 90px;
-      padding: 10px;
-      margin: 5px;
-      border-radius: 8px;
-      display: inline-block;
-    }
-
-    .product-card {
-      background-color: #2196F3;
-      color: white;
-      max-height: 20px;
-    }
-
-    .user-products {
-      text-align: left;
-      margin-top: 20px;
-    }
-
-    .user-product-card {
-      background-color: #FFD700;
-      color: black;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background-color: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      max-width: 80vw;
-      max-height: 80vh;
-      overflow: auto;
-      position: relative;
-    }
-
-    .close-btn {
-      cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-    }
-
-    .category-slider {
-      white-space: nowrap;
-      overflow-x: auto;
-      padding-bottom: 10px;
-    }
-
-    .category-slider::-webkit-scrollbar {
-      display: none;
-    }
-
-    .product-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-
-    .product-card-container {
-      flex-basis: 48%;
-      margin-bottom: 10px;
-    }
-  </style>
+        #totalInfo {
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            padding: 10px;
+            width: 300px;
+        }
+    </style>
+    <title>Dynamic Search</title>
 </head>
-
 <body>
-
-  <h2>Мобільний додаток</h2>
-
-  <div class="container">
-    <!-- Картка обрати продукт -->
-    <div class="card" onclick="openModal()">Обрати продукт</div>
-  </div>
-
-  <!-- Виведення вибраних продуктів -->
-  <div class="user-products" id="userProductsContainer"></div>
-
-  <!-- Модальне вікно -->
-  <div class="modal" id="myModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">&times;</span>
-      <div class="category-slider" id="categories"></div>
-      <div class="product-list" id="products"></div>
+    <div>
+        <input type="text" id="search" oninput="showSuggestions(this.value)" onblur="hideSuggestions()" class="input">
+        <div id="suggestions"></div>
     </div>
-  </div>
 
-  <script>
-    const products = [
-      { category: 'fruits', name: 'Apple' },
-      { category: 'fruits', name: 'Banana' },
-      { category: 'fruits', name: 'Orange' },
-      { category: 'fruits', name: 'Grapes' },
-      { category: 'fruits', name: 'Strawberry' },
-      { category: 'fruits', name: 'Watermelon' },
-      { category: 'vegetables', name: 'Carrot' },
-      { category: 'vegetables', name: 'Broccoli' },
-      { category: 'vegetables', name: 'Spinach' },
-      { category: 'vegetables', name: 'Tomato' },
-      { category: 'vegetables', name: 'Cucumber' },
-      { category: 'vegetables', name: 'Bell Pepper' },
-      { category: 'dairy', name: 'Milk' },
-      { category: 'dairy', name: 'Cheese' },
-      { category: 'dairy', name: 'Yogurt' },
-      { category: 'dairy', name: 'Butter' },
-      { category: 'dairy', name: 'Cream' },
-      { category: 'dairy', name: 'Eggs' },
-      { category: 'grains', name: 'Rice' },
-      { category: 'grains', name: 'Oats' },
-      { category: 'grains', name: 'Quinoa' },
-      { category: 'grains', name: 'Bread' },
-      { category: 'grains', name: 'Pasta' },
-      { category: 'grains', name: 'Barley' },
-      { category: 'protein', name: 'Chicken' },
-      { category: 'protein', name: 'Beef' },
-      { category: 'protein', name: 'Fish' },
-      { category: 'protein', name: 'Tofu' },
-      { category: 'protein', name: 'Beans' },
-      { category: 'protein', name: 'Eggs' },
-      { category: 'snacks', name: 'Chips' },
-      { category: 'snacks', name: 'Nuts' },
-      { category: 'snacks', name: 'Chocolate' },
-      { category: 'snacks', name: 'Popcorn' },
-      { category: 'snacks', name: 'Granola Bars' },
-      { category: 'snacks', name: 'Fruit Snacks' },
-    ];
+    <div id="totalInfo">
+        <h2>Загальна інформація</h2>
+        <div>Загальна кількість продуктів: <span id="totalQuantity">0</span> г</div>
+        <div>Загальна кількість ккал: <span id="totalCalories">0</span></div>
+        <div>Загальна кількість білків: <span id="totalProteins">0</span> г</div>
+        <div>Загальна кількість жирів: <span id="totalFats">0</span> г</div>
+        <div>Загальна кількість вуглеводів: <span id="totalCarbs">0</span> г</div>
+        <br>
+        <div>КБЖВ на 100г продукту:</div>
+        <div> Калорії: <span id="avgСalories">0</span> г</div>
+        <div>Білки: <span id="avgProteins">0</span> г</div>
+        <div>Жири: <span id="avgFats">0</span> г</div>
+        <div>Вуглеводи: <span id="avgCarbs">0</span> г</div>
+    </div>
 
-    const userProducts = [];
+    <div id="userProducts"></div>
 
-    function openModal() {
-      const modal = document.getElementById('myModal');
-      modal.style.display = 'flex';
+    <script>
+        var products = [
+            { category: 'Фрукти', name: 'Яблуко', quantity: 100, proteins: 0.5, fats: 0.2, carbs: 14, calories: 52 },
+            { category: 'Мясо', name: 'Курятина', quantity: 100,proteins: 25, fats: 3.6, carbs: 0, calories: 135 },
+            { category: 'Злаки', name: 'Гречка', quantity: 100,proteins: 12.6, fats: 2.3, carbs: 62, calories: 335 }
+            // Додайте інші продукти за необхідністю
+        ];
 
-      // Відображення категорій
-      const categoriesDiv = document.getElementById('categories');
-      categoriesDiv.innerHTML = '';
-      const uniqueCategories = [...new Set(products.map(product => product.category))];
-      uniqueCategories.forEach(category => {
-        const categoryCard = createCard(category, 'category-card', showProductsInCategory);
-        categoriesDiv.appendChild(categoryCard);
-      });
-    }
+        var userProducts = [];
 
-    function showProductsInCategory(category) {
-      // Відображення продуктів вибраної категорії
-      const productsDiv = document.getElementById('products');
-      productsDiv.innerHTML = ''; // Очищення попереднього вмісту
+        function showSuggestions(query) {
+            var suggestionsDiv = document.getElementById('suggestions');
+            suggestionsDiv.innerHTML = '';
 
-      const productsInCategory = products.filter(product => product.category === category);
-      productsInCategory.forEach(product => {
-        const productCard = createCard(product.name, 'product-card', () => selectProduct(product.name));
-        const productCardContainer = document.createElement('div');
-        productCardContainer.className = 'product-card-container';
-        productCardContainer.appendChild(productCard);
-        productsDiv.appendChild(productCardContainer);
-      });
-    }
+            if (query.trim() === '') {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
 
-    function selectProduct(productName) {
-      // Додаємо обраний продукт до масиву userProducts
-      userProducts.push(productName);
+            var matches = products.filter(function(product) {
+                return product.name.toLowerCase().includes(query.toLowerCase());
+            });
 
-      // Виводимо обрані продукти на сторінці
-      displayUserProducts();
+            if (matches.length > 0) {
+                suggestionsDiv.style.display = 'block';
+                matches.forEach(function(match) {
+                    var suggestion = document.createElement('div');
+                    suggestion.textContent = match.name;
+                    suggestion.onclick = function() {
+                        addProductToUser(match);
+                        suggestionsDiv.style.display = 'none';
+                    };
+                    suggestionsDiv.appendChild(suggestion);
+                });
+            } else {
+                suggestionsDiv.style.display = 'none';
+            }
+        }
 
-      closeModal();
-    }
+        function hideSuggestions() {
+            setTimeout(function() {
+                document.getElementById('suggestions').style.display = 'none';
+            }, 200);
+        }
 
-    function displayUserProducts() {
-      const userProductsContainer = document.getElementById('userProductsContainer');
-      userProductsContainer.innerHTML = '';
+        function addProductToUser(product) {
+            var quantity = prompt('Введіть кількість продукту (г):', '100');
+            if (!quantity) return;
 
-      userProducts.forEach(product => {
-        const userProductCard = createCard(product, 'user-product-card');
-        userProductsContainer.appendChild(userProductCard);
-      });
-    }
+            quantity = parseFloat(quantity);
 
-    function createCard(content, className, clickHandler) {
-      const card = document.createElement('div');
-      card.className = `card ${className}`;
-      card.textContent = content;
+            if (isNaN(quantity) || quantity <= 0) {
+                alert('Будь ласка, введіть правильну кількість.');
+                return;
+            }
 
-      if (clickHandler) {
-        card.onclick = clickHandler.bind(null, content);
-      }
+            var userProduct = {
+                name: product.name,
+                quantity: quantity,
+                proteins: (product.proteins / 100) * quantity,
+                fats: (product.fats / 100) * quantity,
+                carbs: (product.carbs / 100) * quantity,
+                calories: (product.calories / 100) * quantity
+            };
 
-      return card;
-    }
+            userProducts.push(userProduct);
 
-    function closeModal() {
-      const modal = document.getElementById('myModal');
-      modal.style.display = 'none';
-    }
+            updatePage();
+        }
 
-    window.onclick = function (event) {
-      const modal = document.getElementById('myModal');
-      if (event.target === modal) {
-        closeModal();
-      }
-    };
-  </script>
+        function updatePage() {
+            var userProductsDiv = document.getElementById('userProducts');
+            userProductsDiv.innerHTML = '';
 
+            var totalQuantity = 0;
+            var totalCalories = 0;
+            var totalProteins = 0;
+            var totalFats = 0;
+            var totalCarbs = 0;
+
+            userProducts.forEach(function(product) {
+                var card = document.createElement('div');
+                card.classList.add('product-card');
+                card.innerHTML = `
+                    <div><strong>${product.name}</strong></div>
+                    <div>Кількість: <input type="number" value="${product.quantity}" onchange="updateQuantity(this, ${userProducts.indexOf(product)})"> г</div>
+                    <div>Ккал: ${product.calories.toFixed(2)}</div>
+                    <div>Білки: ${product.proteins.toFixed(2)} г</div>
+                    <div>Жири: ${product.fats.toFixed(2)} г</div>
+                    <div>Вуглеводи: ${product.carbs.toFixed(2)} г</div>
+                `;
+                userProductsDiv.appendChild(card);
+
+                totalQuantity += product.quantity;
+                totalCalories += product.calories;
+                totalProteins += product.proteins;
+                totalFats += product.fats;
+                totalCarbs += product.carbs;
+            });
+
+            document.getElementById('totalQuantity').textContent = totalQuantity.toFixed(2);
+            document.getElementById('totalCalories').textContent = totalCalories.toFixed(2);
+            document.getElementById('totalProteins').textContent = totalProteins.toFixed(2);
+            document.getElementById('totalFats').textContent = totalFats.toFixed(2);
+            document.getElementById('totalCarbs').textContent = totalCarbs.toFixed(2);
+
+            var avgСalories = ((totalCalories / totalQuantity) * 100).toFixed(2);
+            var avgProteins = ((totalProteins / totalQuantity) * 100).toFixed(2);
+            var avgFats = ((totalFats / totalQuantity) * 100).toFixed(2);
+            var avgCarbs = ((totalCarbs / totalQuantity) * 100).toFixed(2);
+
+            document.getElementById('avgСalories').textContent = avgСalories;
+            document.getElementById('avgProteins').textContent = avgProteins;
+            document.getElementById('avgFats').textContent = avgFats;
+            document.getElementById('avgCarbs').textContent = avgCarbs;
+
+            document.getElementById('search').value = '';
+        }
+
+        function updateQuantity(input, index) {
+            var newQuantity = parseFloat(input.value);
+
+            if (isNaN(newQuantity) || newQuantity <= 0) {
+                alert('Будь ласка, введіть правильну кількість.');
+                input.value = userProducts[index].quantity;
+                return;
+            }
+
+            userProducts[index].quantity = newQuantity;
+            userProducts[index].proteins = (products[index].proteins / 100) * newQuantity;
+            userProducts[index].fats = (products[index].fats / 100) * newQuantity;
+            userProducts[index].carbs = (products[index].carbs / 100) * newQuantity;
+            userProducts[index].calories = (products[index].calories / 100) * newQuantity;
+
+            updatePage();
+        }
+    </script>
 </body>
-
 </html>
