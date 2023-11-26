@@ -31,7 +31,7 @@
       border-radius: 10px;
       margin: 10px;
       padding: 20px;
-      width: 90vw;
+    
       max-width: 400px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       cursor: pointer;
@@ -42,34 +42,20 @@
       transform: scale(1.05);
     }
 
-    .category-container {
-      display: flex;
-      overflow-x: auto;
-      padding: 10px;
-    }
-
     .category-card {
       background-color: #4CAF50;
       color: white;
-      margin-right: 10px;
+      width: 90px;
       padding: 10px;
+      margin: 5px;
       border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .product-container {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 10px;
+      display: inline-block;
     }
 
     .product-card {
       background-color: #2196F3;
       color: white;
-      margin: 5px;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
+      max-height: 20px;
     }
 
     .user-products {
@@ -80,9 +66,6 @@
     .user-product-card {
       background-color: #FFD700;
       color: black;
-      margin: 5px;
-      padding: 10px;
-      border-radius: 8px;
     }
 
     .modal {
@@ -100,8 +83,9 @@
     .modal-content {
       background-color: #fff;
       border-radius: 10px;
-      max-width: 80%;
-      max-height: 80%;
+      padding: 20px;
+      max-width: 80vw;
+      max-height: 80vh;
       overflow: auto;
       position: relative;
     }
@@ -111,7 +95,27 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      font-size: 20px;
+    }
+
+    .category-slider {
+      white-space: nowrap;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+
+    .category-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .product-card-container {
+      flex-basis: 48%;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -129,11 +133,11 @@
   <div class="user-products" id="userProductsContainer"></div>
 
   <!-- Модальне вікно -->
-  <div class="modal" id="myModal" onclick="closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
+  <div class="modal" id="myModal">
+    <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
-      <div class="category-container" id="categories"></div>
-      <div class="product-container" id="products"></div>
+      <div class="category-slider" id="categories"></div>
+      <div class="product-list" id="products"></div>
     </div>
   </div>
 
@@ -147,28 +151,34 @@
       { category: 'fruits', name: 'Watermelon' },
       { category: 'vegetables', name: 'Carrot' },
       { category: 'vegetables', name: 'Broccoli' },
-      { category: 'vegetables', name: 'Cucumber' },
-      { category: 'vegetables', name: 'Tomato' },
       { category: 'vegetables', name: 'Spinach' },
-      { category: 'vegetables', name: 'Potato' },
+      { category: 'vegetables', name: 'Tomato' },
+      { category: 'vegetables', name: 'Cucumber' },
+      { category: 'vegetables', name: 'Bell Pepper' },
       { category: 'dairy', name: 'Milk' },
       { category: 'dairy', name: 'Cheese' },
       { category: 'dairy', name: 'Yogurt' },
       { category: 'dairy', name: 'Butter' },
       { category: 'dairy', name: 'Cream' },
-      { category: 'dairy', name: 'Egg' },
+      { category: 'dairy', name: 'Eggs' },
       { category: 'grains', name: 'Rice' },
+      { category: 'grains', name: 'Oats' },
+      { category: 'grains', name: 'Quinoa' },
       { category: 'grains', name: 'Bread' },
       { category: 'grains', name: 'Pasta' },
-      { category: 'grains', name: 'Quinoa' },
-      { category: 'grains', name: 'Oats' },
       { category: 'grains', name: 'Barley' },
-      { category: 'beverages', name: 'Water' },
-      { category: 'beverages', name: 'Tea' },
-      { category: 'beverages', name: 'Coffee' },
-      { category: 'beverages', name: 'Juice' },
-      { category: 'beverages', name: 'Soda' },
-      { category: 'beverages', name: 'Smoothie' },
+      { category: 'protein', name: 'Chicken' },
+      { category: 'protein', name: 'Beef' },
+      { category: 'protein', name: 'Fish' },
+      { category: 'protein', name: 'Tofu' },
+      { category: 'protein', name: 'Beans' },
+      { category: 'protein', name: 'Eggs' },
+      { category: 'snacks', name: 'Chips' },
+      { category: 'snacks', name: 'Nuts' },
+      { category: 'snacks', name: 'Chocolate' },
+      { category: 'snacks', name: 'Popcorn' },
+      { category: 'snacks', name: 'Granola Bars' },
+      { category: 'snacks', name: 'Fruit Snacks' },
     ];
 
     const userProducts = [];
@@ -195,7 +205,10 @@
       const productsInCategory = products.filter(product => product.category === category);
       productsInCategory.forEach(product => {
         const productCard = createCard(product.name, 'product-card', () => selectProduct(product.name));
-        productsDiv.appendChild(productCard);
+        const productCardContainer = document.createElement('div');
+        productCardContainer.className = 'product-card-container';
+        productCardContainer.appendChild(productCard);
+        productsDiv.appendChild(productCardContainer);
       });
     }
 
@@ -235,6 +248,13 @@
       const modal = document.getElementById('myModal');
       modal.style.display = 'none';
     }
+
+    window.onclick = function (event) {
+      const modal = document.getElementById('myModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
   </script>
 
 </body>
