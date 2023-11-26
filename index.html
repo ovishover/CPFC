@@ -17,6 +17,28 @@
             margin-top: 10px;
             padding: 10px;
             width: 300px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 5s;
+        }
+
+        .product-card.duplicate {
+            animation: highlightDuplicate 5s;
+        }
+
+        @keyframes highlightDuplicate {
+            0%, 100% { background-color: #ffcccc; }
+            50% { background-color: #fff; }
+        }
+
+        .product-card.new {
+            animation: highlightNew 5s;
+        }
+
+        @keyframes highlightNew {
+            0%, 100% { background-color: #ccffcc; }
+            50% { background-color: #fff; }
         }
 
         #totalInfo {
@@ -24,33 +46,120 @@
             margin-top: 10px;
             padding: 10px;
             width: 300px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
+
+        #search {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        #userProducts {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .quantity-input {
+            width: 60px;
+            margin-right: 5px;
+        }
+
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header,
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-row span {
+            flex: 1;
+            text-align: center;
+        }
+
+        .table-header {
+            font-weight: bold;
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            background: #fff;
+            /* z-index: 1000; */
+        }
+.selection {
+  padding-top: 350px;
+}
+       
     </style>
     <title>Dynamic Search</title>
 </head>
 <body>
-    <div>
-        <input type="text" id="search" oninput="showSuggestions(this.value)" onblur="hideSuggestions()" class="input">
+  <header>
+    <div id="search-container">
+        <input type="text" id="search" oninput="showSuggestions(this.value)" onblur="hideSuggestions()" placeholder="Пошук продукту..." class="input">
         <div id="suggestions"></div>
     </div>
 
     <div id="totalInfo">
-        <h2>Загальна інформація</h2>
-        <div>Вага страви, г: <span id="totalQuantity">0</span> г</div>
-        <div>Всього ккал, г: <span id="totalCalories">0</span></div>
-        <div>Всього білків, г: <span id="totalProteins">0</span> г</div>
-        <div>Всього жирів, г: <span id="totalFats">0</span> г</div>
-        <div>Всього вуглеводів, г: <span id="totalCarbs">0</span> г</div>
-        <br>
-        <div>КБЖВ на 100г продукту:</div>
-        <div> Калорії: <span id="avgСalories">0</span> г</div>
-        <div>Білки: <span id="avgProteins">0</span> г</div>
-        <div>Жири: <span id="avgFats">0</span> г</div>
-        <div>Вуглеводи: <span id="avgCarbs">0</span> г</div>
+        <h2 class="title">Загальна інформація</h2>
+        <div class="table-container">
+          <div class="table-header">
+              <div>Назва</div>
+              <div>Всього <span id="totalQuantity">г</span></div>
+              <div>на 100г</div>
+          </div>
+          <div class="table-row">
+              <div>Калорії</div>
+              <div><span id="totalCalories">0</span></div>
+              <div><span id="avgСalories">0</span></div>
+          </div>
+          <div class="table-row">
+              <div>Білки</div>
+              <div><span id="totalProteins">0</span> г</div>
+              <div><span id="avgProteins">0</span></div>
+          </div>
+          <div class="table-row">
+              <div>Жири</div>
+              <div><span id="totalFats">0</span> г</div>
+              <div><span id="avgFats">0</span></div>
+          </div>
+          <div class="table-row">
+              <div>Вуглеводи</div>
+              <div><span id="totalCarbs">0</span> г</div>
+              <div><span id="avgCarbs">0</span></div>
+          </div>
+      </div>
+        
     </div>
+  </header>
 
+   <div class="selection">
     <div id="userProducts"></div>
-
+  </div>
     <script>
         var products = [
             { category: 'Фрукти', name: 'Яблуко', quantity: 100, proteins: 0.5, fats: 0.2, carbs: 14, calories: 52 },
@@ -97,6 +206,20 @@
         }
 
         function addProductToUser(product) {
+            var existingProductIndex = userProducts.findIndex(function(p) {
+                return p.name.toLowerCase() === product.name.toLowerCase();
+            });
+
+            if (existingProductIndex > -1) {
+                var existingCard = document.getElementById(`userProductCard_${existingProductIndex}`);
+                existingCard.classList.add('duplicate');
+                setTimeout(function() {
+                    existingCard.classList.remove('duplicate');
+                }, 1000);
+                alert('Цей продукт вже доданий!');
+                return;
+            }
+
             var quantity = prompt('Введіть кількість продукту (г):', '100');
             if (!quantity) return;
 
@@ -118,7 +241,31 @@
 
             userProducts.push(userProduct);
 
+            // Додаємо анімацію для нового продукту
+            var userProductsDiv = document.getElementById('userProducts');
+            var newCard = createUserProductCard(userProduct, userProducts.length - 1);
+            userProductsDiv.appendChild(newCard);
+            newCard.classList.add('new');
+            setTimeout(function() {
+                newCard.classList.remove('new');
+            }, 1000);
+
             updatePage();
+        }
+
+        function createUserProductCard(product, index) {
+            var card = document.createElement('div');
+            card.classList.add('product-card');
+            card.setAttribute('id', `userProductCard_${index}`);
+            card.innerHTML = `
+                <div><strong>${product.name}</strong></div>
+                <div>Кількість: <input type="number" class="quantity-input" value="${product.quantity}" onchange="updateQuantity(this, ${index})"> г</div>
+                <div>Ккал: ${product.calories.toFixed(2)}</div>
+                <div>Білки: ${product.proteins.toFixed(2)} г</div>
+                <div>Жири: ${product.fats.toFixed(2)} г</div>
+                <div>Вуглеводи: ${product.carbs.toFixed(2)} г</div>
+            `;
+            return card;
         }
 
         function updatePage() {
@@ -131,17 +278,8 @@
             var totalFats = 0;
             var totalCarbs = 0;
 
-            userProducts.forEach(function(product) {
-                var card = document.createElement('div');
-                card.classList.add('product-card');
-                card.innerHTML = `
-                    <div><strong>${product.name}</strong></div>
-                    <div>Кількість: <input type="number" value="${product.quantity}" onchange="updateQuantity(this, ${userProducts.indexOf(product)})"> г</div>
-                    <div>Ккал: ${product.calories.toFixed(2)}</div>
-                    <div>Білки: ${product.proteins.toFixed(2)} г</div>
-                    <div>Жири: ${product.fats.toFixed(2)} г</div>
-                    <div>Вуглеводи: ${product.carbs.toFixed(2)} г</div>
-                `;
+            userProducts.forEach(function(product, index) {
+                var card = createUserProductCard(product, index);
                 userProductsDiv.appendChild(card);
 
                 totalQuantity += product.quantity;
