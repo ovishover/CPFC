@@ -42,26 +42,34 @@
       transform: scale(1.05);
     }
 
+    .category-container {
+      display: flex;
+      overflow-x: auto;
+      padding: 10px;
+    }
+
     .category-card {
       background-color: #4CAF50;
       color: white;
-      width: 80px;
-      height: 80px;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      margin: 5px;
+      margin-right: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
-    .category-container {
-      overflow-x: auto;
-      white-space: nowrap;
+    .product-container {
+      display: flex;
+      flex-wrap: wrap;
       padding: 10px;
     }
 
     .product-card {
       background-color: #2196F3;
       color: white;
+      margin: 5px;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
     .user-products {
@@ -72,6 +80,9 @@
     .user-product-card {
       background-color: #FFD700;
       color: black;
+      margin: 5px;
+      padding: 10px;
+      border-radius: 8px;
     }
 
     .modal {
@@ -89,9 +100,10 @@
     .modal-content {
       background-color: #fff;
       border-radius: 10px;
-      padding: 20px;
-      max-width: 400px;
-      margin: auto;
+      max-width: 80%;
+      max-height: 80%;
+      overflow: auto;
+      position: relative;
     }
 
     .close-btn {
@@ -99,6 +111,7 @@
       position: absolute;
       top: 10px;
       right: 10px;
+      font-size: 20px;
     }
   </style>
 </head>
@@ -116,11 +129,11 @@
   <div class="user-products" id="userProductsContainer"></div>
 
   <!-- Модальне вікно -->
-  <div class="modal" id="myModal">
-    <div class="modal-content">
+  <div class="modal" id="myModal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
       <span class="close-btn" onclick="closeModal()">&times;</span>
       <div class="category-container" id="categories"></div>
-      <div id="products"></div>
+      <div class="product-container" id="products"></div>
     </div>
   </div>
 
@@ -128,12 +141,34 @@
     const products = [
       { category: 'fruits', name: 'Apple' },
       { category: 'fruits', name: 'Banana' },
+      { category: 'fruits', name: 'Orange' },
+      { category: 'fruits', name: 'Grapes' },
+      { category: 'fruits', name: 'Strawberry' },
+      { category: 'fruits', name: 'Watermelon' },
       { category: 'vegetables', name: 'Carrot' },
       { category: 'vegetables', name: 'Broccoli' },
-      { category: 'meat', name: 'Apple' },
-      { category: 'oil', name: 'Banana' },
-      { category: 'waters', name: 'Carrot' },
-      { category: 'vegetables', name: 'Broccoli' },
+      { category: 'vegetables', name: 'Cucumber' },
+      { category: 'vegetables', name: 'Tomato' },
+      { category: 'vegetables', name: 'Spinach' },
+      { category: 'vegetables', name: 'Potato' },
+      { category: 'dairy', name: 'Milk' },
+      { category: 'dairy', name: 'Cheese' },
+      { category: 'dairy', name: 'Yogurt' },
+      { category: 'dairy', name: 'Butter' },
+      { category: 'dairy', name: 'Cream' },
+      { category: 'dairy', name: 'Egg' },
+      { category: 'grains', name: 'Rice' },
+      { category: 'grains', name: 'Bread' },
+      { category: 'grains', name: 'Pasta' },
+      { category: 'grains', name: 'Quinoa' },
+      { category: 'grains', name: 'Oats' },
+      { category: 'grains', name: 'Barley' },
+      { category: 'beverages', name: 'Water' },
+      { category: 'beverages', name: 'Tea' },
+      { category: 'beverages', name: 'Coffee' },
+      { category: 'beverages', name: 'Juice' },
+      { category: 'beverages', name: 'Soda' },
+      { category: 'beverages', name: 'Smoothie' },
     ];
 
     const userProducts = [];
