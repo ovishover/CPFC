@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,20 +104,23 @@ min-height: 25px;
         }
 
         .table-container {
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+          display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    justify-content: space-around;
+    align-items: center;
+    align-content: flex-start;
         }
 
-        .table-header,
-        .table-row {
+        .table-header{
             display: flex;
             justify-content: space-between;
-            padding: 10px;
+            padding: 2px 2px 2px 2px;
             border-bottom: 1px solid #ccc;
         }
 
@@ -136,7 +140,9 @@ min-height: 25px;
         header {
             position: fixed;
             width: 100%;
-
+.row_2 {
+padding: 2px 5px 2px 5px;
+}
          
             background-color: rgba(255, 255, 255, .6);
     z-index: 1000;
@@ -172,38 +178,38 @@ min-height: 25px;
 </head>
 <body>
 <header>
-    
-
-    <div id="totalInfo">
+    	  <div id="totalInfo">
       
     <h3 class="title">Загальна інформація</h2>
         <div class="table-container">
-            <div class="table-header">
-                <div>Назва</div>
-                <div>Всього <span id="totalQuantity">г</span></div>
-                <div>на 100г</div>
+            <div class="table-row_1">
+                <div class="table-header">Назва</div>
+                <div class="row_2">Калорії</div>
+				 <div class="row_2">Білки, г</div>
+				<div class="row_2">Жири, г</div>
+				<div class="row_2">Вуглеводи, г</div>
             </div>
-            <div class="table-row">
-                <div>Калорії</div>
-                <div><span id="totalCalories">0</span></div>
-                <div><span id="avgСalories">0</span></div>
+            <div class="table-row_1">
+                <div class="table-header">Всього, г_<span id="totalQuantity"></span></div>
+                <div class="row_2"><span id="totalCalories">0</span></div>
+                <div class="row_2"><span id="totalCarbs">0</span></div>
+				<div class="row_2"><span id="totalProteins">0</span></div>
+				<div class="row_2"><span id="totalFats">0</span></div>
+				
             </div>
-            <div class="table-row">
-                <div>Білки</div>
-                <div><span id="totalProteins">0</span> г</div>
-                <div><span id="avgProteins">0</span></div>
+            <div class="table-row_1">
+                <div class="table-header">на 100 г</div>
+                <div class="row_2"><span id="avgСalories">0</span></div>
+				<div class="row_2"><span id="avgCarbs">0</span></div>
+				  <div class="row_2"><span id="avgProteins">0</span></div>
+				  <div class="row_2"><span id="avgFats">0</span></div>
             </div>
-            <div class="table-row">
-                <div>Жири</div>
-                <div><span id="totalFats">0</span> г</div>
-                <div><span id="avgFats">0</span></div>
-            </div>
-            <div class="table-row">
-                <div>Вуглеводи</div>
-                <div><span id="totalCarbs">0</span> г</div>
-                <div><span id="avgCarbs">0</span></div>
-            </div>
+          
         </div>
+		
+		
+		
+		
         <div class="search-input">
         <div id="search-container">
           <input type="text" id="search" oninput="showSuggestions(this.value)" onblur="hideSuggestions()" placeholder="Пошук продукту..." class="input">
@@ -221,7 +227,7 @@ min-height: 25px;
     var products = [
         { category: 'Фрукти', name: 'Яблуко', quantity: 100, proteins: 0.5, fats: 0.2, carbs: 14, calories: 52 },
         { category: 'Мясо', name: 'Курятина', quantity: 100,proteins: 25, fats: 3.6, carbs: 0, calories: 135 },
-        { category: 'Злаки', name: 'Гречка', quantity: 100,proteins: 12.6, fats: 2.3, carbs: 62, calories: 335 }
+        { category: 'Злаки', name: 'Гречка', quantity: 100,proteins: 12.6, fats: 2.3, carbs: 62, calories: 335 },
         // Додайте інші продукти за необхідністю
     ];
 
@@ -351,7 +357,7 @@ min-height: 25px;
             totalCarbs += product.carbs;
         });
 
-        document.getElementById('totalQuantity').textContent = totalQuantity.toFixed(2);
+        document.getElementById('totalQuantity').textContent = totalQuantity.toFixed(0);
         document.getElementById('totalCalories').textContent = totalCalories.toFixed(2);
         document.getElementById('totalProteins').textContent = totalProteins.toFixed(2);
         document.getElementById('totalFats').textContent = totalFats.toFixed(2);
