@@ -1,13 +1,15 @@
 #suggestions {
-            display: none;
-            position: fixed;
-            border: 1px solid #ccc;
-			border-radius: 8px;
-            width: 350px;
-			padding: 5px;
-            font-size: 17px;
-min-height: 25px;
-            background-color: rgb(172, 248, 248);
+	display: none;
+    position: fixed;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 350px;
+    padding: 5px;
+    font-size: 17px;
+    min-height: 25px;
+    background-color: rgb(172, 248, 248);
+    overflow-y: auto;  /* Додаємо скролінг */
+    max-height: 200px; /* Максимальна висота списку */
         }
 		
 		.prod-list {
