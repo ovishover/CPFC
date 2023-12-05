@@ -2,7 +2,8 @@
             display: none;
             position: fixed;
             border: 1px solid #ccc;
-            width: 250px;
+            width: 350px;
+			padding: 5px;
             font-size: 17px;
 min-height: 25px;
             background-color: rgb(172, 248, 248);
@@ -72,8 +73,8 @@ min-height: 25px;
         }
 
         #search-container {
-          /* display: flex; */
-    /* width: 180px; */
+    display: flex;
+    width: 350px;
     align-items: center;
     justify-content: space-around;
     align-content: center;
@@ -153,8 +154,7 @@ padding: 2px 5px 2px 5px;
               margin: 10px 0px 10px 0px;
           }
           .input {
-            /* margin-bottom: 100px; */
-		  width: 250px;
+		  width: 350px;
 
           }
           .search-input {
