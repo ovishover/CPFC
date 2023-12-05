@@ -9,7 +9,7 @@
     min-height: 25px;
     background-color: rgb(172, 248, 248);
     overflow-y: auto;  /* Додаємо скролінг */
-    max-height: 150px; /* Максимальна висота списку */
+    max-height: 150px;Максимальна висота списку */
         }
 		
 		.row-quantity {
