@@ -9,7 +9,7 @@
     min-height: 25px;
     background-color: rgb(172, 248, 248);
     overflow-y: auto;  /* Додаємо скролінг */
-    max-height: 200px; /* Максимальна висота списку */
+    max-height: 100px; /* Максимальна висота списку */
         }
 		
 		.prod-list {
