@@ -106,6 +106,7 @@ var products = [
             suggestionsDiv.style.display = 'block';
             matches.forEach(function(match) {
                 var suggestion = document.createElement('div');
+				suggestion.classList.add('prod-list');
                 suggestion.textContent = match.name;
                 suggestion.onclick = function() {
                     addProductToUser(match);
