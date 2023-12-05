@@ -2,17 +2,22 @@
             display: none;
             position: fixed;
             border: 1px solid #ccc;
+			border-radius: 8px;
             width: 350px;
 			padding: 5px;
             font-size: 17px;
 min-height: 25px;
             background-color: rgb(172, 248, 248);
         }
+		
+		.prod-list {
+		padding: 10px 0px 10px 5px;
+   }
         .product-card {
             border: 1px solid #ccc;
             margin: 10px;
             padding: 10px;
-            min-width: 270px;
+            min-width: 350px;
             display: block;
             max-height: 180px;
             background-color: #f9f9f9;
@@ -163,7 +168,8 @@ padding: 2px 5px 2px 5px;
             justify-content: space-around;
           }
 		  body {
-		  margin: 0
+		  margin: 0;
+		  background-color: #fbfbfb;
 		  }
 
 		.head-contain {
