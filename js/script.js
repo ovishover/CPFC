@@ -174,24 +174,24 @@ var products = [
       }
 
     function createUserProductCard(product, index) {
-        var card = document.createElement('div');
-        card.classList.add('product-card');
-        card.setAttribute('id', `userProductCard_${index}`);
-        card.innerHTML = `
+    var card = document.createElement('div');
+    card.classList.add('product-card');
+    card.setAttribute('id', `userProductCard_${index}`);
+    card.innerHTML = `
         <div>
             <div class="cardName"><strong>${product.name}</strong></div>
-            <div>Кількість: <input type="number" class="quantity-input" value="${product.quantity}" onchange="updateQuantity(this, ${index})"> г</div>
-            <div>Ккал: ${product.calories.toFixed(2)}</div>
-            <div>Білки: ${product.proteins.toFixed(2)} г</div>
-            <div>Жири: ${product.fats.toFixed(2)} г</div>
-            <div>Вуглеводи: ${product.carbs.toFixed(2)} г</div>
-          </div>
-          <div>
+            <div class="row-quantity">Кількість: <input type="number" class="quantity-input" value="${product.quantity}" onchange="updateQuantity(this, ${index})"> г</div>
+            <div class="row-quantity">Ккал: ${product.calories.toFixed(2)}</div>
+            <div class="row-quantity">Білки: ${product.proteins.toFixed(2)} г</div>
+            <div class="row-quantity">Жири: ${product.fats.toFixed(2)} г</div>
+            <div class="row-quantity">Вуглеводи: ${product.carbs.toFixed(2)} г</div>
+        </div>
+        <div>
             <button onclick="removeProduct(${index})">Видалити</button>
-          </div>
-        `;
-        return card;
-    }
+        </div>
+    `;
+    return card;
+}
 
     function updatePage() {
         var userProductsDiv = document.getElementById('userProducts');
