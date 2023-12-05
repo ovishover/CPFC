@@ -109,6 +109,7 @@ min-height: 25px;
     justify-content: space-around;
     align-items: center;
     align-content: flex-start;
+	background-color: white;
         }
 
         .table-header{
@@ -116,6 +117,7 @@ min-height: 25px;
             justify-content: space-between;
             padding: 2px 2px 2px 2px;
             border-bottom: 1px solid #ccc;
+			justify-content: center;
         }
 
         .table-row:last-child {
