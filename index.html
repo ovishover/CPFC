@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,15 +7,8 @@
         <title>Калькулятор КБЖВ</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap"
-            rel="stylesheet"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.min.css"
-        />
-
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.min.css"/>
         <link rel="stylesheet" href="./css/styles.css" />
 </head>
 <body>
@@ -30,9 +21,9 @@
             <div class="table-row_1">
                 <div class="table-header">Назва</div>
                 <div class="row_2">Калорії</div>
-				 <div class="row_2">Білки, г</div>
-				<div class="row_2">Жири, г</div>
-				<div class="row_2">Вуглеводи, г</div>
+		<div class="row_2">Білки, г</div>
+		<div class="row_2">Жири, г</div>
+		<div class="row_2">Вуглеводи, г</div>
             </div>
             <div class="table-row_1">
                 <div class="table-header">Всього, г_<span id="totalQuantity"></span></div>
@@ -45,17 +36,12 @@
             <div class="table-row_1">
                 <div class="table-header">на 100 г</div>
                 <div class="row_2"><span id="avgСalories">0</span></div>
-		
 		<div class="row_2"><span id="avgProteins">0</span></div>
 		<div class="row_2"><span id="avgFats">0</span></div>
 		<div class="row_2"><span id="avgCarbs">0</span></div>
             </div>
           
-        </div>
-		
-		
-		
-		
+        </div>	
         <div class="search-input">
         <div id="search-container">
           <input type="text" id="search" oninput="showSuggestions(this.value)" onblur="hideSuggestions()" placeholder="Пошук продукту..." class="input">
@@ -66,7 +52,6 @@
     </div>
 	</div>
 </header>
-
 <div class="selection">
     <div id="userProducts"></div>
 </div>
