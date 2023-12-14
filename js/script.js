@@ -196,44 +196,44 @@ var products = [
 }
 
     function updatePage() {
-        var userProductsDiv = document.getElementById('userProducts');
-        userProductsDiv.innerHTML = '';
+    var userProductsDiv = document.getElementById('userProducts');
+    userProductsDiv.innerHTML = '';
 
-        var totalQuantity = 0;
-        var totalCalories = 0;
-        var totalProteins = 0;
-        var totalFats = 0;
-        var totalCarbs = 0;
+    var totalQuantity = 0;
+    var totalCalories = 0;
+    var totalProteins = 0;
+    var totalFats = 0;
+    var totalCarbs = 0;
 
-        userProducts.forEach(function(product, index) {
-            var card = createUserProductCard(product, index);
-            userProductsDiv.appendChild(card);
+    userProducts.forEach(function(product, index) {
+        var card = createUserProductCard(product, index);
+        userProductsDiv.appendChild(card);
 
-            totalQuantity += product.quantity;
-            totalCalories += product.calories;
-            totalProteins += product.proteins;
-            totalFats += product.fats;
-            totalCarbs += product.carbs;
-        });
+        totalQuantity += product.quantity;
+        totalCalories += product.calc ? product.calories : 0;
+        totalProteins += product.calc ? product.proteins : 0;
+        totalFats += product.calc ? product.fats : 0;
+        totalCarbs += product.calc ? product.carbs : 0;
+    });
 
-        document.getElementById('totalQuantity').textContent = totalQuantity.toFixed(0);
-        document.getElementById('totalCalories').textContent = totalCalories.toFixed(2);
-        document.getElementById('totalProteins').textContent = totalProteins.toFixed(2);
-        document.getElementById('totalFats').textContent = totalFats.toFixed(2);
-        document.getElementById('totalCarbs').textContent = totalCarbs.toFixed(2);
+    document.getElementById('totalQuantity').textContent = totalQuantity.toFixed(0);
+    document.getElementById('totalCalories').textContent = totalCalories.toFixed(2);
+    document.getElementById('totalProteins').textContent = totalProteins.toFixed(2);
+    document.getElementById('totalFats').textContent = totalFats.toFixed(2);
+    document.getElementById('totalCarbs').textContent = totalCarbs.toFixed(2);
 
-        var avgСalories = ((totalCalories / totalQuantity) * 100).toFixed(2);
-        var avgProteins = ((totalProteins / totalQuantity) * 100).toFixed(2);
-        var avgFats = ((totalFats / totalQuantity) * 100).toFixed(2);
-        var avgCarbs = ((totalCarbs / totalQuantity) * 100).toFixed(2);
+    var avgСalories = ((totalCalories / totalQuantity) * 100).toFixed(2);
+    var avgProteins = ((totalProteins / totalQuantity) * 100).toFixed(2);
+    var avgFats = ((totalFats / totalQuantity) * 100).toFixed(2);
+    var avgCarbs = ((totalCarbs / totalQuantity) * 100).toFixed(2);
 
-        document.getElementById('avgСalories').textContent = avgСalories;
-        document.getElementById('avgProteins').textContent = avgProteins;
-        document.getElementById('avgFats').textContent = avgFats;
-        document.getElementById('avgCarbs').textContent = avgCarbs;
+    document.getElementById('avgСalories').textContent = avgСalories;
+    document.getElementById('avgProteins').textContent = avgProteins;
+    document.getElementById('avgFats').textContent = avgFats;
+    document.getElementById('avgCarbs').textContent = avgCarbs;
 
-        document.getElementById('search').value = '';
-    }
+    document.getElementById('search').value = '';
+}
 
     function updateQuantity(input, index) {
         var newQuantity = parseFloat(input.value);
