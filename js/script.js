@@ -90,10 +90,7 @@ var products = [
   { name: 'Яйця курячі', type: 'Яйця', calories: 154.30, proteins: 12.00, fats: 10.00, carbs: 1.00, calc: true }
 ];
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('mydatabase.db');
-
-    var userProducts = [];
+ var userProducts = [];
 
     function showSuggestions(query) {
         var suggestionsDiv = document.getElementById('suggestions');
